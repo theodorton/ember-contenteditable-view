@@ -38,13 +38,18 @@ Ember.ContenteditableView = Em.View.extend({
 
 	keyUp: function(event) {
 		if (this.get('plaintext')) {
-			return this.set('value', this.$().text());
+			var element = this.get('element');
+			return this.set('value', element.innerText || element.textContent);
 		} else {
 			return this.set('value', this.$().html());
 		}
 	},
 
 	setContent: function() {
-		return this.$().html(this.get('value'));
+		if (this.get('plaintext')) {
+			return this.$().html(this.get('value').replace(/\n+/g,'<br>'));
+		} else {
+			return this.$().html(this.get('value'));
+		}
 	}
 });
